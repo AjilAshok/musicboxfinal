@@ -262,7 +262,7 @@ class _HomescreenState extends State<Homescreen> {
                                                                     600));
                                                   }
 
-                                                  print('ontap');
+                                                  // print('ontap');
 
                                                   //  Navigator.pop(context);
                                                 },

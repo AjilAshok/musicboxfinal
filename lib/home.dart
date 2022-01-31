@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hive/hive.dart';
 import 'package:musicplry/favourites.dart';
 import 'package:musicplry/homescreen.dart';
 import 'package:musicplry/playinfgsc.dart';
@@ -14,6 +15,8 @@ class Home extends StatefulWidget {
   State<Home> createState() => _HomeState();
 }
 
+
+
 class _HomeState extends State<Home> {
   bool issearch = false;
   int crctindex = 0;
@@ -23,6 +26,7 @@ class _HomeState extends State<Home> {
     const Favourites(),
     const Settings(),
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,17 +43,20 @@ class _HomeState extends State<Home> {
           // child: bottomplayingsc(),
           child: 
           
-          Container(
-            
-            height: MediaQuery.of(context).size.height * 0.08,
-            decoration: const BoxDecoration(
-                borderRadius: BorderRadius.all(
-                    // topLeft:
-                    Radius.circular(20),
-                    // topRight: Radius.circular(20)
-                    ),
-                color: Colors.grey),
-            child: const BottomPlayingsc(),
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Container(
+             
+              height: MediaQuery.of(context).size.height * 0.08,
+              decoration:  BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+          
+                 
+                  color: Colors.blueGrey
+                  ),
+                  
+              child: const BottomPlayingsc(),
+            ),
           ),
         )
 
