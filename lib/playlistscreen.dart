@@ -9,22 +9,18 @@ import 'package:on_audio_query/on_audio_query.dart';
 
 List<Audio> playli = [];
 
-class playlistscreen extends StatefulWidget {
+class playlistscreen extends StatelessWidget {
   String titleName;
   playlistscreen({Key? key, required this.titleName}) : super(key: key);
 
-  @override
-  State<playlistscreen> createState() => _playlistscreenState();
-}
 
-class _playlistscreenState extends State<playlistscreen> {
   final _box = Hive.box("muciss");
   final playlistSongs = ValueNotifier([]);
   List<Audio> songlist = [];
   @override
   Widget build(BuildContext context) {
     // List <musicList>hello = _box.get(widget.titleName);
-    playlistSongs.value = _box.get(widget.titleName);
+    playlistSongs.value = _box.get(titleName);
     return Scaffold(
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
@@ -36,8 +32,8 @@ class _playlistscreenState extends State<playlistscreen> {
             },
             icon: Icon(Icons.arrow_back)),
         title: Text(
-          widget.titleName,
-          style: TextStyle(fontSize: 26),
+          titleName,
+          style: TextStyle(fontSize: 26,overflow: TextOverflow.ellipsis),
         ),
         centerTitle: true,
       ),
@@ -65,14 +61,8 @@ class _playlistscreenState extends State<playlistscreen> {
                               metas: Metas(
                                   title: lis.title, id: lis.id.toString())));
                         }
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => Playingsc(
-                                newMus: songlist,
-                                index: index,
-                              ),
-                            ));
+                      
+                        Get.to(Playingsc(newMus: songlist,index: index,));
                       },
                      
                       leading: Container(
@@ -113,29 +103,16 @@ class _playlistscreenState extends State<playlistscreen> {
                                         child: InkWell(
                                       child: const Text('Remove from playlist'),
                                       onTap: () async {
-                                        Navigator.pop(context);
+                                        // Navigator.pop(context);
                                         playlistSongs.value
                                             .remove(playlistSongs.value[index]);
                                         playlistSongs.notifyListeners();
-                                        await _box.put(widget.titleName,
+                                        await _box.put(titleName,
                                             playlistSongs.value);
+                                            Get.back();
                                       },
 
-                                      //                   onLongPress: (){
-                                      //                      Get.defaultDialog(
-                                      // title: "Delete",
-                                      // middleText: "Are you sure",
-                                      // textCancel: "No",
-                                      // textConfirm: "Yes",
-                                      // onCancel: () {
-                                      //   Navigator.pop(context);
-                                      // },
-                                      // onConfirm: () {
-                                      //   _box.deleteAt(index);
-                                      // },
-                                      // cancelTextColor: Colors.black,
-                                      // confirmTextColor: Colors.black);
-                                      //                   },
+                                     
                                     )),
                                   ]),
                         ],
@@ -149,31 +126,12 @@ class _playlistscreenState extends State<playlistscreen> {
                 itemCount: newPlaylistSongs.length);
           },
         ),
-        //     ListView(
-        //     children: [
-        //
-
-        //     ],
-        // ),
+      
       ),
     );
   }
 
-  // Future deletee() {
-  //   return showDialog(
-  //       context: context,
-  //       builder: (context) => AlertDialog(
-  //             title: const Text('Are you sure '),
-  //             actions: [
-  //               TextButton(onPressed: () {}, child: const Text('Yes')),
-  //               TextButton(
-  //                   onPressed: () {
-  //                     Navigator.pop(context);
-  //                   },
-  //                   child: const Text('No')),
-  //             ],
-  //           ));
-  // }
+  // 
   getTimeString(int milisec) {
     if (milisec == null) milisec = 0;
     String min =

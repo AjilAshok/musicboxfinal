@@ -1,22 +1,24 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:hive/hive.dart';
 import 'package:musicplry/bottomsheet.dart';
+import 'package:musicplry/controller/songcontroller.dart';
 import 'package:musicplry/database.dart';
 import 'package:musicplry/playlistscreen.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-class Playlist extends StatefulWidget {
-  const Playlist({Key? key}) : super(key: key);
+class Playlist extends StatelessWidget {
+   Playlist({Key? key}) : super(key: key);
 
-  @override
-  State<Playlist> createState() => _PlaylistState();
-}
+//   @override
+//   State<Playlist> createState() => _PlaylistState();
+// }
 
-class _PlaylistState extends State<Playlist> {
+// class _PlaylistState extends State<Playlist> {
   final TextEditingController createcontroler = TextEditingController();
   String music = '';
   List<SongModel> playList = [];
@@ -26,6 +28,7 @@ class _PlaylistState extends State<Playlist> {
 
   @override
   Widget build(BuildContext context) {
+     Get.put(Songcontroler());
     return Scaffold(
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
@@ -42,10 +45,11 @@ class _PlaylistState extends State<Playlist> {
             gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [Color(0xFF20002c), Color(0xFFcbb4d4)])),
+                colors: [Color(0xFF20002c), Color(0xFFE779B8)])),
         child: ValueListenableBuilder(
           valueListenable: box.listenable(),
           builder: (context, Box value, child) {
+            
             List keys = box.keys.toList();
             keys.remove("allSongs");
             keys.remove("fav");
@@ -57,12 +61,9 @@ class _PlaylistState extends State<Playlist> {
                 return Container(
                   margin: EdgeInsets.all(15),
                   child: InkWell(
-                    onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => playlistscreen(
-                                  titleName: playlistkey[index],
-                                ))),
+                    onTap: () => 
+                 
+                    Get.to(playlistscreen(titleName: playlistkey[index])),
                     onLongPress: () {
                       // box.delete("allSongs");
                       Get.defaultDialog(
@@ -71,11 +72,13 @@ class _PlaylistState extends State<Playlist> {
                           textCancel: "No",
                           textConfirm: "Yes",
                           onCancel: () {
-                            Navigator.pop(context);
+                            // Navigator.pop(context);
+                            Get.back();
                           },
                           onConfirm: () {
                             box.delete(playlistkey[index]);
-                            Navigator.pop(context);
+                            // Navigator.pop(context);
+                            Get.back();
                           },
                           cancelTextColor: Colors.black,
                           confirmTextColor: Colors.black);
@@ -100,7 +103,7 @@ class _PlaylistState extends State<Playlist> {
                               margin: EdgeInsets.only(
                                   top:
                                       MediaQuery.of(context).size.height * 0.1),
-                              child: Text(playlistkey[index].toString()),
+                              child: Text(playlistkey[index].toString(),style: TextStyle(overflow: TextOverflow.ellipsis),),
                             ),
                           )
                         ],
@@ -117,32 +120,35 @@ class _PlaylistState extends State<Playlist> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Padding(
-        padding:
-            EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.1),
-        child: FloatingActionButton.extended(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          onPressed: () {
-            opendilogue();
-          },
-          label: const Text(
-            'Create a playlist',
-            style: TextStyle(color: Colors.black),
-          ),
-          icon: const Icon(
-            Icons.add,
-            color: Colors.black,
+      floatingActionButton: GetBuilder<Songcontroler>(
+        builder: (controller) => 
+         Padding(
+          padding:
+              EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.1),
+          child: FloatingActionButton.extended(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            onPressed: () {
+              opendilogue(controller,context);
+            },
+            label: const Text(
+              'Create a playlist',
+              style: TextStyle(color: Colors.black),
+            ),
+            icon: const Icon(
+              Icons.add,
+              color: Colors.black,
+            ),
           ),
         ),
       ),
     );
   }
 
-  Future opendilogue() {
+  Future opendilogue(Songcontroler controler,cntx) {
     final _formKey = GlobalKey<FormState>();
     return showDialog(
-        context: context,
+        context: cntx,
         builder: (context) => AlertDialog(
               title: const Text('New Playlist'),
               content: Form(
@@ -155,9 +161,10 @@ class _PlaylistState extends State<Playlist> {
                     }
                   },
                   onChanged: (value) {
-                    setState(() {
-                      music = value;
-                    });
+                    
+                    controler.playlistcreate(value);
+                    
+                      
                   },
                   decoration:
                       const InputDecoration(hintText: 'Create a playlist'),
@@ -174,8 +181,11 @@ class _PlaylistState extends State<Playlist> {
                                     borderRadius: BorderRadius.circular(20)))),
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
-                            await box.put(music, allplaylist);
-                            Navigator.pop(context);
+                            await box.put(controler.music, allplaylist);
+                            // Navigator.pop(context);
+                            Get.back();
+                            createcontroler.clear();
+                            
                           }
                         },
                         child: const Text(
@@ -188,7 +198,9 @@ class _PlaylistState extends State<Playlist> {
                                 RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20)))),
                         onPressed: () {
-                          Navigator.pop(context);
+                          // Navigator.pop(context);
+                          Get.back();
+                          createcontroler.clear();
                         },
                         child: const Text(
                           'Cancel',

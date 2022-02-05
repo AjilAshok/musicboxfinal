@@ -6,15 +6,16 @@ import 'package:hive/hive.dart';
 import 'package:musicplry/database.dart';
 import 'package:musicplry/playinfgsc.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
 
-class Favourites extends StatefulWidget {
-  const Favourites({Key? key}) : super(key: key);
+class Favourites extends StatelessWidget {
+  Favourites({Key? key}) : super(key: key);
 
-  @override
-  State<Favourites> createState() => _FavouritesState();
-}
+//   @override
+//   State<Favourites> createState() => _FavouritesState();
+// }
 
-class _FavouritesState extends State<Favourites> {
+// class _FavouritesState extends State<Favourites> {
   final _boxe = Hive.box("muciss");
   final favoutiesSongs = ValueNotifier([]);
   List<Audio> songs = [];
@@ -22,11 +23,10 @@ class _FavouritesState extends State<Favourites> {
   @override
   Widget build(BuildContext context) {
     // favoutiesSongs.value = _boxe.get("fav");
-    List _keys=_boxe.keys.toList();
-    if(_keys.where((element) => element=="fav").isNotEmpty){
-      favoutiesSongs.value=_boxe.get("fav");
+    List _keys = _boxe.keys.toList();
+    if (_keys.where((element) => element == "fav").isNotEmpty) {
+      favoutiesSongs.value = _boxe.get("fav");
     }
-    
 
     return Scaffold(
         backgroundColor: Colors.grey[200],
@@ -44,13 +44,35 @@ class _FavouritesState extends State<Favourites> {
               gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  colors: [ Color(0xFF1CB5E0),Color(0xFF000046)])),
+                  colors: [Color(0xFF1CB5E0), Color(0xFF000046)])),
           child: ValueListenableBuilder(
             valueListenable: favoutiesSongs,
             builder: (context, List newfavourites, _) {
+              if (newfavourites.isEmpty) {
+                return Center(
+                  child: DefaultTextStyle(
+                      style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 25,
+                          
+                          ),
+                      child: AnimatedTextKit(
+                        
+                        isRepeatingAnimation: true,
+                        totalRepeatCount: 10,
+                        
+                        
+                        animatedTexts: [
+                          // ScaleAnimatedText('No'),
+                          WavyAnimatedText('No Results'),
+                        ],
+                      )),
+                );
+              }
               List newfav = newfavourites.toList();
               return ListView.separated(
                   itemBuilder: (context, index) {
+                    // print(favoutiesSongs);
                     return Container(
                       margin: const EdgeInsets.only(top: 30, right: 5, left: 5),
                       decoration: BoxDecoration(
@@ -63,9 +85,8 @@ class _FavouritesState extends State<Favourites> {
                                 metas: Metas(
                                     title: favli.title,
                                     id: favli.id.toString())));
-                                    
-                         }
-                        // print(favoutiesSongs.value);
+                          }
+                          // print(favoutiesSongs.value);
                           Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -94,7 +115,11 @@ class _FavouritesState extends State<Favourites> {
                           children: [
                             Container(
                                 width: MediaQuery.of(context).size.width * 0.3,
-                                child: Text(newfavourites[index].title,style: TextStyle(overflow: TextOverflow.ellipsis),)),
+                                child: Text(
+                                  newfavourites[index].title,
+                                  style: TextStyle(
+                                      overflow: TextOverflow.ellipsis),
+                                )),
                             SizedBox(
                               width: MediaQuery.of(context).size.width * 0.1,
                             ),
@@ -109,19 +134,17 @@ class _FavouritesState extends State<Favourites> {
                             PopupMenuButton(
                                 itemBuilder: (context) => [
                                       PopupMenuItem(
-                                        child:
-                                             InkWell
-                                             (
-                                               child: Text('Remove from Favourites'),
-                                               onTap: ()async{
-                                                 Navigator.pop(context);
-                                                 favoutiesSongs.value.remove(favoutiesSongs.value[index]);
-                                                 favoutiesSongs.notifyListeners();
-                                                    await _boxe.put("fav", favoutiesSongs.value);
-
-                                               },
-                                               
-                                               ),
+                                        child: InkWell(
+                                          child: Text('Remove from Favourites'),
+                                          onTap: () async {
+                                            Navigator.pop(context);
+                                            favoutiesSongs.value.remove(
+                                                favoutiesSongs.value[index]);
+                                            favoutiesSongs.notifyListeners();
+                                            await _boxe.put(
+                                                "fav", favoutiesSongs.value);
+                                          },
+                                        ),
                                       ),
                                     ]),
                           ],
@@ -135,7 +158,6 @@ class _FavouritesState extends State<Favourites> {
                   itemCount: newfavourites.length);
             },
           ),
-        
         ));
   }
 
