@@ -10,11 +10,11 @@ import 'package:musicplry/splash.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 class Songcontroler extends GetxController {
-  final OnAudioQuery audioQuery = OnAudioQuery();
+  // final OnAudioQuery audioQuery = OnAudioQuery();
   final box = Hive.box("muciss");
-  List<SongModel> fechsongsall = [];
-  // List<musicList> audios=[];
-  List<musicList> hivelist = [];
+  // List<SongModel> fechsongsall = [];
+  
+  // List<musicList> hivelist = [];
   bool search = true;
   String isSearch = '';
   String music = '';
@@ -22,22 +22,8 @@ class Songcontroler extends GetxController {
   int crctindex = 0;
   bool visible = false;
 
-  @override
-  void onInit() {
-    // TODO: implement onInit
 
-    fecthsongs();
-    super.onInit();
-    navigatetohome();
-  }
-
-  navigatetohome() async {
-    await Future.delayed(const Duration(milliseconds: 3000), () {});
-    // Navigator.pushReplacement(
-    //     context, MaterialPageRoute(builder: (context) => const Home()));
-    Get.off(Home());
-    // update();
-  }
+  
 
   changeSearch(value) {
     isSearch = value;
@@ -69,30 +55,14 @@ class Songcontroler extends GetxController {
     update();
   }
 
-  fecthsongs() async {
-    bool permissionStatus = await audioQuery.permissionsStatus();
-    if (!permissionStatus) {
-      await audioQuery.permissionsRequest();
-      List<SongModel> allfechsong = await audioQuery.querySongs();
-      fechsongsall = allfechsong;
-      await addsonglist();
-    }
-    List<SongModel> allfechsongs = await audioQuery.querySongs();
-    fechsongsall = allfechsongs;
-    await addsonglist();
+  
+  
+}
 
-    update();
-  }
-
-  addsonglist() async {
-    hivelist = fechsongsall
-        .map((e) => musicList(
-            title: e.title,
-            uri: e.uri.toString(),
-            id: e.id,
-            duration: e.duration!.toInt()))
-        .toList();
-    await box.put("allSongs", hivelist);
-    print(box);
+class songbinding extends Bindings {
+  @override
+  void dependencies() {
+    // TODO: implement dependencies
+    Get.put(Songcontroler());
   }
 }

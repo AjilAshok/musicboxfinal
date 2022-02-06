@@ -10,9 +10,10 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 void main() async {
   await Hive.initFlutter();
+  // if (!Hive.isAdapterRegistered(musicListAdapter().typeId)) {
 
   Hive.registerAdapter(musicListAdapter());
-
+  
   await Hive.openBox("muciss");
   runApp(MyApp());
 }

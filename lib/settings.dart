@@ -33,7 +33,7 @@ class Settings extends StatelessWidget {
               gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  colors: [Color(0xFF30E8BF), Color(0xFFFF8235)])),
+                  colors: [Color(0xFF30E8BF), Colors.black87])),
           padding: EdgeInsets.only(top: 30, left: 10),
           child: Column(
             children: [

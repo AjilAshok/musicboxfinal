@@ -11,14 +11,18 @@ import 'package:musicplry/home.dart';
 class Splash extends StatelessWidget {
   Splash({Key? key}) : super(key: key);
 
-
-
   @override
   Widget build(BuildContext context) {
     Get.put(Songcontroler());
     return GetBuilder<Songcontroler>(
-      builder: (controller) => 
-       Scaffold(
+      initState: (state) async{
+         await Future.delayed(const Duration(milliseconds: 3000), () {});
+    // Navigator.pushReplacement(
+    //     context, MaterialPageRoute(builder: (context) => const Home()));
+    Get.off(Home());
+      },
+      
+      builder: (controller) => Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: Colors.black,
         body: Center(
@@ -32,8 +36,8 @@ class Splash extends StatelessWidget {
                 decoration: BoxDecoration(
                   // ignore: prefer_const_constructors
                   image: DecorationImage(
-                    image:
-                        AssetImage('assets/38533148948342036b1f9c9027735ce1.jpg'),
+                    image: AssetImage(
+                        'assets/38533148948342036b1f9c9027735ce1.jpg'),
                   ),
                   color: Colors.black,
                 ),
@@ -55,5 +59,12 @@ class Splash extends StatelessWidget {
         ),
       ),
     );
+  }
+  navigatetohome() async {
+    await Future.delayed(const Duration(milliseconds: 3000), () {});
+    // Navigator.pushReplacement(
+    //     context, MaterialPageRoute(builder: (context) => const Home()));
+    Get.off(Home());
+   Songcontroler().update();
   }
 }

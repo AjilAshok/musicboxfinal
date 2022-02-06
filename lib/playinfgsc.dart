@@ -240,15 +240,15 @@ class Playingsc extends StatelessWidget {
                                                             .where((element) =>
                                                                 element.id
                                                                     .toString() ==
-                                                                controller
-                                                                    .hivelist[
+                                                                // controller
+                                                                    hivelist[
                                                                         intx]
                                                                     .id
                                                                     .toString())
                                                             .isEmpty) {
                                                           favourites.value.add(
-                                                              controller
-                                                                      .hivelist[
+                                                              
+                                                                      hivelist[
                                                                   intx]);
                                                           favourites
                                                               .notifyListeners();
