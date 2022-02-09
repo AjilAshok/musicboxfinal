@@ -44,7 +44,7 @@ class Homescreen extends StatelessWidget {
     List _keys = box.keys.toList();
     if (_keys.where((element) => element == "fav").isNotEmpty) {
       favourites = box.get("fav");
-    }
+    } 
     return GetBuilder<Songcontroler>(
         initState: (state) async {
           bool permissionStatus = await audioQuery.permissionsStatus();
@@ -126,14 +126,21 @@ class Homescreen extends StatelessWidget {
                                   color: Colors.black,
                                   fontSize: 25,
                                 ),
-                                child: AnimatedTextKit(
-                                  isRepeatingAnimation: true,
-                                  totalRepeatCount: 10,
-                                  animatedTexts: [
-                                    // ScaleAnimatedText('No'),
-                                    WavyAnimatedText('No Results'),
-                                  ],
-                                )),
+                                child: 
+                                  // mainAxisAlignment: MainAxisAlignment.center,
+                                  
+                                    AnimatedTextKit(
+                                      isRepeatingAnimation: true,
+                                      totalRepeatCount: 10,
+                                      animatedTexts: [
+                                        // ScaleAnimatedText('No'),
+                                        WavyAnimatedText('No Results'),
+                                      ],
+                                    ),
+                                    
+                                  
+                                
+                                ),
                           );
                         }
 
@@ -250,6 +257,7 @@ class Homescreen extends StatelessWidget {
                                                                   "fav",
                                                                   favourites);
                                                               Get.back();
+                                                              
                                                               Get.snackbar(
                                                                   "Added to favourites",
                                                                   "",
