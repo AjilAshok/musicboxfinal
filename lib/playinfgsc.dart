@@ -19,17 +19,15 @@ class Playingsc extends StatelessWidget {
 
   Playingsc({Key? key, this.index, required this.newMus}) : super(key: key);
 
-  
   IconData plyBtn = FontAwesomeIcons.playCircle;
   Color icncolor = Colors.white;
   final _boxe = Hive.box("muciss");
   final favourites = ValueNotifier([]);
   final assetsAudioPlayer = AssetsAudioPlayer.withId("1");
-  bool isplay=false;
+  bool isplay = false;
   bool playing = false;
 
   bool show = true;
-  
 
   @override
   Widget build(BuildContext context) {
@@ -40,8 +38,8 @@ class Playingsc extends StatelessWidget {
     }
     return SafeArea(
         child: GetBuilder<Songcontroler>(
-          initState: (state) {
-             assetsAudioPlayer.open(
+      initState: (state) {
+        assetsAudioPlayer.open(
           //  Audio('assets/sound/epic-hollywood-trailer-9489.mp3'),showNotification: true,autoStart: false
           Playlist(audios: newMus, startIndex: index),
           loopMode: LoopMode.playlist, showNotification: isSwitched,
@@ -53,8 +51,7 @@ class Playingsc extends StatelessWidget {
 
           // ignore: prefer_const_constructors
         );
-          },
-      
+      },
       builder: (controller) => Scaffold(
           backgroundColor: Colors.grey[200],
           appBar: AppBar(
@@ -67,11 +64,8 @@ class Playingsc extends StatelessWidget {
                   controller.visilblity();
                   if (playing) {
                     assetsAudioPlayer.stop();
-                    
                   }
-                 
-                  
-                  
+
                   // Get.to(Home(show: show));
                 },
                 icon: const Icon(
@@ -85,12 +79,8 @@ class Playingsc extends StatelessWidget {
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
                       colors: [Color(0xFFA000C6), Colors.black])),
-              child: Center(child:
-
-                     
-
-                      assetsAudioPlayer.builderCurrent(
-                          builder: (context, playing) {
+              child: Center(child: assetsAudioPlayer.builderCurrent(
+                      builder: (context, playing) {
                 return Column(children: [
                   SizedBox(
                     height: 50,
@@ -123,8 +113,6 @@ class Playingsc extends StatelessWidget {
                           }
                         },
                       ),
-                   
-                   
                       Container(
                         width: 200,
                         margin: const EdgeInsets.only(
@@ -143,8 +131,6 @@ class Playingsc extends StatelessWidget {
                           } else {
                             return Container();
                           }
-
-                         
                         }),
                       )
                     ],
@@ -241,15 +227,12 @@ class Playingsc extends StatelessWidget {
                                                                 element.id
                                                                     .toString() ==
                                                                 // controller
-                                                                    hivelist[
-                                                                        intx]
+                                                                hivelist[intx]
                                                                     .id
                                                                     .toString())
                                                             .isEmpty) {
                                                           favourites.value.add(
-                                                              
-                                                                      hivelist[
-                                                                  intx]);
+                                                              hivelist[intx]);
                                                           favourites
                                                               .notifyListeners();
                                                           await _boxe.put("fav",
@@ -447,8 +430,6 @@ class Playingsc extends StatelessWidget {
 }
 
 class BottomPlayingsc extends StatelessWidget {
-
-
   BottomPlayingsc({Key? key}) : super(key: key);
 
   final assetsAudioPlayer = AssetsAudioPlayer.withId("1");

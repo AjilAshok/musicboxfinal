@@ -49,6 +49,13 @@ class Playlist extends StatelessWidget {
         child: ValueListenableBuilder(
           valueListenable: box.listenable(),
           builder: (context, Box value, child) {
+            // if (allplaylist.isEmpty) {
+            //   return Center(
+            //     child: Text("no Results"),
+            //   );
+              
+            // }
+            
             
             List keys = box.keys.toList();
             keys.remove("allSongs");

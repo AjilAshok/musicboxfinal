@@ -25,6 +25,9 @@ class Songcontroler extends GetxController {
 
   
 
+
+  
+
   changeSearch(value) {
     isSearch = value;
     update();

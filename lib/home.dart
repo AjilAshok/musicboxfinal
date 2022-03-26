@@ -24,7 +24,7 @@ class Home extends StatelessWidget {
     Homescreen(),
     Playlist(),
     Favourites(),
-    const Settings(),
+    Settings(),
   ];
 
   @override
@@ -35,33 +35,22 @@ class Home extends StatelessWidget {
           // pages[crctindex],
 
           GetBuilder<Songcontroler>(
-        builder: (controller) => Stack(children: [
-          Expanded(child: pages[controller.crctindex]),
-          Align(
-            alignment: Alignment.bottomLeft,
-            // child: bottomplayingsc(),
-            child:
-             Padding(
-          padding: EdgeInsets.all(10),
-          child: Container(
-            height: MediaQuery.of(context).size.height * 0.08,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: Colors.blueGrey,),
-            child: BottomPlayingsc(),
-          ),
+        builder: (controller) => Column(
+          children: [
+            Expanded(child: pages[controller.crctindex]),
+            Container(
+              color: Colors.blueGrey,
+              child: BottomPlayingsc(),
             ),
-          )
-        ],),
+          ],
+        ),
       ),
       //  pages[crctindex]
       bottomNavigationBar: GetBuilder<Songcontroler>(
         builder: (controller) => BottomNavigationBar(
             currentIndex: controller.crctindex,
             onTap: (index) {
-             
               controller.bootomindex(index);
-              
             },
             type: BottomNavigationBarType.fixed,
             unselectedItemColor: Colors.white,
